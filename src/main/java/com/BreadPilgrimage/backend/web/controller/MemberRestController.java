@@ -27,4 +27,12 @@ public class MemberRestController {
     return ApiResponse.onSuccess(result);
   }
 
+  @Operation(summary = "로그인 API", description = "로그인 API 입니다.")
+  @PostMapping("/login")
+  public ApiResponse<MemberResponseDTO.LoginResultDTO> login(@RequestBody MemberRequestDTO.LoginDTO request)
+  {
+    MemberResponseDTO.LoginResultDTO result = memberCommandService.login(request);
+    return ApiResponse.onSuccess(result);
+  }
+
 }

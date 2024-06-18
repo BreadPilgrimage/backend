@@ -10,10 +10,10 @@ public class MemberRequestDTO {
 
   @Getter
   public static class JoinDTO{
-    @NotBlank
+    @NotBlank(message = "이름이 비어있습니다.")
     String name;
 
-    @NotBlank
+    @NotBlank(message = "닉네임이 비어있습니다.")
     @ExistNickname
     String nickname;
 
@@ -22,7 +22,18 @@ public class MemberRequestDTO {
     @NotBlank
     String email;
 
-    @NotBlank
+    @NotBlank(message = "비밀번호가 비어있습니다.")
+    String password;
+  }
+
+  @Getter
+  public static class LoginDTO{
+
+    @NotBlank(message = "이메일이 비어있습니다.")
+    @Email(message = "올바른 이메일 주소를 입력해주세요.")
+    String email;
+
+    @NotBlank(message = "비밀번호가 비어있습니다.")
     String password;
   }
 

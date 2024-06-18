@@ -19,9 +19,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
   // 멤버 관려 에러
   MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
-  NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
-  NICKNAME_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "닉네임이 이미 존재합니다."),
-  EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "이메일이 이미 존재합니다.");
+  NICKNAME_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임이 이미 존재합니다."),
+  EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "이메일이 이미 존재합니다."),
+  MEMBER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "MEMBER4004", "로그인 실패 : 이메일이나 비밀번호가 일치하지 않음");
 
   private final HttpStatus httpStatus;
   private final String code;

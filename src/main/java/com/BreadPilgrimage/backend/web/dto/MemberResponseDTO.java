@@ -14,4 +14,13 @@ public class MemberResponseDTO {
   public static class JoinResultDTO{
     Long memberId;
   }
+
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class LoginResultDTO{
+    String token;
+    Long memberid;
+  }
 }

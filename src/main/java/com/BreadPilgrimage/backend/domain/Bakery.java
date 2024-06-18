@@ -23,49 +23,46 @@ public class Bakery extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // 순번
-  @Column(nullable = false)
-  private int sn;
-
-  // 업종명
-  @Column(length = 50, nullable = false)
+  @Column(name = "idsty_nm")
   private String idstyNm;
 
-  //업소명
-  @Column(length = 50, nullable = false)
-  private String bsshNm;
+  @Column(name = "lo")
+  private double lo;
 
-  //지번주소
-  @Column(length = 100, nullable = false)
-  private String lnmAdrs;
-
-  //도로명주소
-  @Column(length = 100, nullable = false)
+  @Column(name = "rn_adrs")
   private String rnAdrs;
 
-  //행정동코드
-  @Column(length = 10, nullable = false)
+  @Column(name = "admd_cd")
   private String admdCd;
 
-  //행정동명
-  @Column(length = 10, nullable = false)
+  @Column(name = "admd_nm")
   private String admdNm;
 
-  //법정동코드
-  @Column(length = 10, nullable = false)
-  private String lgdngCd;
+  @Column(name = "lnm_adrs")
+  private String lnmAdrs;
 
-  //법정동명
-  @Column(length = 10, nullable = false)
-  private String lgdngNm;
-
-  //전화번호
-  @Column(length = 30, nullable = false)
+  @Column(name = "telno")
   private String telno;
 
-  //데이터기준일자
-  @Column(length = 10, nullable = false)
+  @Column(name = "la")
+  private double la;
+
+  @Column(name = "data_stdr_de")
   private String dataStdrDe;
+
+  @Column(name = "sn")
+  private int sn;
+
+  @Column(name = "bssh_nm")
+  private String bsshNm;
+
+  @Column(name = "lgdng_cd")
+  private String lgdngCd;
+
+  @Column(name = "lgdng_nm")
+  private String lgdngNm;
+
+
 
 //  @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 //  @JsonBackReference

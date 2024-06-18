@@ -37,11 +37,14 @@ public class Member extends BaseEntity {
   @Column(nullable = false, length = 20)
   private String nickname;
 
-  @Column(nullable = false, length = 20)
-  private String userId;
+  @Column(nullable = false, length = 20, unique = true)
+  private String email;
 
   @Column(nullable = false,length = 255)
   private String password;
+
+  @Column(columnDefinition = "TEXT")
+  private String bio;
 
   @Column(nullable = false)
   private String imageUrl;

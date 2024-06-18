@@ -4,11 +4,9 @@ import com.BreadPilgrimage.backend.domain.Bakery;
 import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.web.dto.ApiResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -53,5 +51,7 @@ public class BakeryCommandServiceImpl implements BakeryCommandService{
         .lgdngNm(bakeryDTO.getLgdngNm())
         .build();
   }
+
+
 
 }

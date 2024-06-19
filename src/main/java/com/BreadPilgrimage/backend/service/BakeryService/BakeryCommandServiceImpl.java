@@ -1,10 +1,15 @@
 package com.BreadPilgrimage.backend.service.BakeryService;
 
+import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
+import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
 import com.BreadPilgrimage.backend.domain.Bakery;
 import com.BreadPilgrimage.backend.repository.BakeryRepository;
+import com.BreadPilgrimage.backend.repository.MemberBakeryRepository;
 import com.BreadPilgrimage.backend.web.dto.ApiResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
+import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 public class BakeryCommandServiceImpl implements BakeryCommandService{
 
   private final BakeryRepository bakeryRepository;
+  private final MemberBakeryRepository memberBakeryRepository;
 
   private final String apiUrl = "https://www.seogu.go.kr/seoguAPI/3660000/getBakryStts?pageNo=1&numOfRows=192";
 
@@ -32,6 +38,25 @@ public class BakeryCommandServiceImpl implements BakeryCommandService{
           .collect(Collectors.toList());
       bakeryRepository.saveAll(bakeries);
     }
+  }
+
+  @Override
+  public BakeryDetailDTO getBakeryDetail(Long bakeryId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_EXIST));
+    long bookmarkCount = memberBakeryRepository.countByBakeryId(bakeryId);
+    BakeryDetailDTO bakeryDetailDTO = BakeryDetailDTO.builder()
+        .idstyNm(bakery.getIdstyNm())
+        .admdNm(bakery.getAdmdNm())
+        .bsshNm(bakery.getBsshNm())
+        .lgdngNm(bakery.getLgdngNm())
+        .lnmAdrs(bakery.getLnmAdrs())
+        .rnAdrs(bakery.getRnAdrs())
+        .telno(bakery.getTelno())
+        .bookmarks(bookmarkCount)
+        .build();
+
+    return bakeryDetailDTO;
   }
 
   private Bakery convertToEntity(BakeryDTO bakeryDTO) {

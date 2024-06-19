@@ -22,4 +22,15 @@ public class BakeryResponseDTO {
     private long bookmarks;
   }
 
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class BakeryMapDTO {
+    private Long id;
+    private double la; //위도
+    private double lo; //경도
+    private String bsshNm; //가게명
+  }
+
 }

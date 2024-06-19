@@ -8,6 +8,7 @@ import com.BreadPilgrimage.backend.repository.MemberBakeryRepository;
 import com.BreadPilgrimage.backend.web.dto.ApiResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
+import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -58,6 +59,20 @@ public class BakeryCommandServiceImpl implements BakeryCommandService{
 
     return bakeryDetailDTO;
   }
+
+  @Override
+  public List<BakeryMapDTO> getBakeryMap() {
+    List<Bakery> bakeries = bakeryRepository.findAll();
+    return bakeries.stream()
+        .map(bakery -> BakeryMapDTO.builder()
+            .id(bakery.getId())
+            .la(bakery.getLa())
+            .lo(bakery.getLo())
+            .bsshNm(bakery.getBsshNm())
+            .build())
+        .collect(Collectors.toList());
+  }
+
 
   private Bakery convertToEntity(BakeryDTO bakeryDTO) {
     return Bakery.builder()

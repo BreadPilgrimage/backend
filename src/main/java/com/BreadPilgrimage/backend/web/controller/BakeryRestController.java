@@ -4,6 +4,8 @@ import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
 import com.BreadPilgrimage.backend.service.BakeryService.BakeryCommandService;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
+import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,5 +27,11 @@ public class BakeryRestController {
     return ApiResponse.onSuccess(result);
   }
 
+  @Operation(summary = "빵집 지도 정보 API", description = "빵집 지도 정보 API입니다.")
+  @GetMapping("/map")
+  public ApiResponse<List<BakeryMapDTO>> getBakeryMap() {
+    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryCommandService.getBakeryMap();
+    return ApiResponse.onSuccess(result);
+  }
 
 }

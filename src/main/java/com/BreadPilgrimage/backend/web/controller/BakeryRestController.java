@@ -1,14 +1,17 @@
 package com.BreadPilgrimage.backend.web.controller;
 
 import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
+import com.BreadPilgrimage.backend.apiPayload.code.status.SuccessStatus;
 import com.BreadPilgrimage.backend.service.BakeryService.BakeryCommandService;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +35,13 @@ public class BakeryRestController {
   public ApiResponse<List<BakeryMapDTO>> getBakeryMap() {
     List<BakeryResponseDTO.BakeryMapDTO> result = bakeryCommandService.getBakeryMap();
     return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "빵집 저장하기 API", description = "사용자가 빵집을 저장하는 API입니다. 빵집 아이디 PathVariable 입니다!")
+  @PostMapping("/{bakeryId}/bookmark")
+  public ApiResponse bookmarkBakery(@PathVariable(name = "bakeryId") Long bakeryId, @AuthenticationPrincipal String memberId) {
+    bakeryCommandService.bookmarkBakery(Long.parseLong(memberId), bakeryId);
+    return ApiResponse.onSuccess(SuccessStatus._OK);
   }
 
 }

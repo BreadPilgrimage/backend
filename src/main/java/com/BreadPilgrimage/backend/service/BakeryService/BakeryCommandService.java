@@ -10,4 +10,6 @@ public interface BakeryCommandService {
   BakeryResponseDTO.BakeryDetailDTO getBakeryDetail(Long bakeryId);
 
   List<BakeryMapDTO> getBakeryMap();
+
+  void bookmarkBakery(Long memberId, Long bakeryId);
 }

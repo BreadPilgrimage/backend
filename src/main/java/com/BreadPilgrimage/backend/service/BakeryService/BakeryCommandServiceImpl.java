@@ -3,14 +3,16 @@ package com.BreadPilgrimage.backend.service.BakeryService;
 import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
 import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
 import com.BreadPilgrimage.backend.domain.Bakery;
+import com.BreadPilgrimage.backend.domain.Member;
+import com.BreadPilgrimage.backend.domain.mapping.MemberBakery;
 import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.repository.MemberBakeryRepository;
+import com.BreadPilgrimage.backend.repository.MemberRepository;
 import com.BreadPilgrimage.backend.web.dto.ApiResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,10 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class BakeryCommandServiceImpl implements BakeryCommandService{
+public class BakeryCommandServiceImpl implements BakeryCommandService {
 
   private final BakeryRepository bakeryRepository;
+  private final MemberRepository memberRepository;
   private final MemberBakeryRepository memberBakeryRepository;
 
   private final String apiUrl = "https://www.seogu.go.kr/seoguAPI/3660000/getBakryStts?pageNo=1&numOfRows=192";
@@ -44,7 +47,7 @@ public class BakeryCommandServiceImpl implements BakeryCommandService{
   @Override
   public BakeryDetailDTO getBakeryDetail(Long bakeryId) {
     Bakery bakery = bakeryRepository.findById(bakeryId)
-        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_EXIST));
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
     long bookmarkCount = memberBakeryRepository.countByBakeryId(bakeryId);
     BakeryDetailDTO bakeryDetailDTO = BakeryDetailDTO.builder()
         .idstyNm(bakery.getIdstyNm())
@@ -72,6 +75,23 @@ public class BakeryCommandServiceImpl implements BakeryCommandService{
             .build())
         .collect(Collectors.toList());
   }
+
+  @Override
+  public void bookmarkBakery(Long memberId, Long bakeryId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+    memberBakeryRepository.findByMemberAndBakery(member, bakery)
+        .ifPresent(mb -> { throw new TempHandler(ErrorStatus.BAKERY_ALREADY_BOOKMARK); });
+
+    MemberBakery memberBakery = MemberBakery.builder()
+        .member(member)
+        .bakery(bakery)
+        .build();
+    memberBakeryRepository.save(memberBakery);
+  }
+
 
 
   private Bakery convertToEntity(BakeryDTO bakeryDTO) {

@@ -24,8 +24,8 @@ public enum ErrorStatus implements BaseErrorCode {
   MEMBER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "MEMBER4004", "로그인 실패 : 이메일이나 비밀번호가 일치하지 않음"),
 
   // 빵집 관련 에러
-  BAKERY_NOT_EXIST(HttpStatus.BAD_REQUEST, "BAKERY4001", "존재하지 않는 빵집입니다.");
-
+  BAKERY_NOT_FOUND(HttpStatus.BAD_REQUEST, "BAKERY4001", "존재하지 않는 빵집입니다."),
+  BAKERY_ALREADY_BOOKMARK(HttpStatus.BAD_REQUEST, "BAKERY4002", "이미 사용자가 저장한 빵집입니다.");
   private final HttpStatus httpStatus;
   private final String code;
   private final String message;

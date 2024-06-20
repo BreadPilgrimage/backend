@@ -13,6 +13,7 @@ import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -92,6 +93,17 @@ public class BakeryCommandServiceImpl implements BakeryCommandService {
     memberBakeryRepository.save(memberBakery);
   }
 
+  @Override
+  public void unbookmarkBakery(Long memberId, Long bakeryId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+    MemberBakery memberBakery = memberBakeryRepository.findByMemberAndBakery(member, bakery)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_BOOKMARK));
+
+    memberBakeryRepository.delete(memberBakery);
+  }
 
 
   private Bakery convertToEntity(BakeryDTO bakeryDTO) {

@@ -12,4 +12,6 @@ public interface BakeryCommandService {
   List<BakeryMapDTO> getBakeryMap();
 
   void bookmarkBakery(Long memberId, Long bakeryId);
+
+  void unbookmarkBakery(Long memberId, Long bakeryId);
 }

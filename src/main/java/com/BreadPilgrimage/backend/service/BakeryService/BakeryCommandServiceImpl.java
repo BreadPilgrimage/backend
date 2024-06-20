@@ -10,10 +10,7 @@ import com.BreadPilgrimage.backend.repository.MemberBakeryRepository;
 import com.BreadPilgrimage.backend.repository.MemberRepository;
 import com.BreadPilgrimage.backend.web.dto.ApiResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryRequestDTO.BakeryDTO;
-import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
-import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,38 +40,6 @@ public class BakeryCommandServiceImpl implements BakeryCommandService {
           .collect(Collectors.toList());
       bakeryRepository.saveAll(bakeries);
     }
-  }
-
-  @Override
-  public BakeryDetailDTO getBakeryDetail(Long bakeryId) {
-    Bakery bakery = bakeryRepository.findById(bakeryId)
-        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
-    long bookmarkCount = memberBakeryRepository.countByBakeryId(bakeryId);
-    BakeryDetailDTO bakeryDetailDTO = BakeryDetailDTO.builder()
-        .idstyNm(bakery.getIdstyNm())
-        .admdNm(bakery.getAdmdNm())
-        .bsshNm(bakery.getBsshNm())
-        .lgdngNm(bakery.getLgdngNm())
-        .lnmAdrs(bakery.getLnmAdrs())
-        .rnAdrs(bakery.getRnAdrs())
-        .telno(bakery.getTelno())
-        .bookmarks(bookmarkCount)
-        .build();
-
-    return bakeryDetailDTO;
-  }
-
-  @Override
-  public List<BakeryMapDTO> getBakeryMap() {
-    List<Bakery> bakeries = bakeryRepository.findAll();
-    return bakeries.stream()
-        .map(bakery -> BakeryMapDTO.builder()
-            .id(bakery.getId())
-            .la(bakery.getLa())
-            .lo(bakery.getLo())
-            .bsshNm(bakery.getBsshNm())
-            .build())
-        .collect(Collectors.toList());
   }
 
   @Override

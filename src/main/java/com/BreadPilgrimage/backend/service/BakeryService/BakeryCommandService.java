@@ -7,10 +7,6 @@ import java.util.List;
 public interface BakeryCommandService {
   void fetchDataAndSave();
 
-  BakeryResponseDTO.BakeryDetailDTO getBakeryDetail(Long bakeryId);
-
-  List<BakeryMapDTO> getBakeryMap();
-
   void bookmarkBakery(Long memberId, Long bakeryId);
 
   void unbookmarkBakery(Long memberId, Long bakeryId);

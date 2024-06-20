@@ -7,5 +7,5 @@ public interface MemberCommandService {
 
   MemberResponseDTO.JoinResultDTO joinMember(MemberRequestDTO.JoinDTO request);
 
-  public MemberResponseDTO.LoginResultDTO login(MemberRequestDTO.LoginDTO loginDTO);
+  MemberResponseDTO.LoginResultDTO login(MemberRequestDTO.LoginDTO loginDTO);
 }

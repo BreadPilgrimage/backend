@@ -3,6 +3,7 @@ package com.BreadPilgrimage.backend.web.controller;
 import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
 import com.BreadPilgrimage.backend.apiPayload.code.status.SuccessStatus;
 import com.BreadPilgrimage.backend.service.BakeryService.BakeryCommandService;
+import com.BreadPilgrimage.backend.service.BakeryService.BakeryQueryService;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
@@ -23,18 +24,19 @@ import io.swagger.v3.oas.annotations.Operation;
 public class BakeryRestController {
 
   private final BakeryCommandService bakeryCommandService;
+  private final BakeryQueryService bakeryQueryService;
 
   @Operation(summary = "빵집 상세페이지 조회 API", description = "빵집 상세페이지 조회 API입니다. 빵집 아이디(bakeryId) PathVariable 입니다! ")
   @GetMapping("/{bakeryId}")
   public ApiResponse<BakeryDetailDTO> getBakeryDetail(@PathVariable("bakeryId") Long bakeryId) {
-    BakeryResponseDTO.BakeryDetailDTO result = bakeryCommandService.getBakeryDetail(bakeryId);
+    BakeryResponseDTO.BakeryDetailDTO result = bakeryQueryService.getBakeryDetail(bakeryId);
     return ApiResponse.onSuccess(result);
   }
 
   @Operation(summary = "빵집 지도 정보 API", description = "빵집 지도 정보 API입니다.")
   @GetMapping("/map")
   public ApiResponse<List<BakeryMapDTO>> getBakeryMap() {
-    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryCommandService.getBakeryMap();
+    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryQueryService.getBakeryMap();
     return ApiResponse.onSuccess(result);
   }
 

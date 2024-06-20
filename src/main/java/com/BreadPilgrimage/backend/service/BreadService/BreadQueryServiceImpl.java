@@ -9,6 +9,7 @@ import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.BreadReviewRepository;
 import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,37 @@ public class BreadQueryServiceImpl implements BreadQueryService{
 
     return breadPreViewDTOList;
   }
+
+  @Override
+  public List<BreadPreViewDTO> getTop3Bread(Long bakeryId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+
+    List<Bread> breadList = breadRepository.findByBakery(bakery);
+
+    List<Bread> sortedBreadList = breadList.stream()
+        .sorted(Comparator.comparingLong(bread ->
+            memberBreadRepository.countByBread((Bread) bread)).reversed())
+        .limit(3)
+        .collect(Collectors.toList());
+
+    List<BreadPreViewDTO> top3BreadPreViewDTOList = sortedBreadList.stream()
+        .map(bread -> {
+          long reviewCount = bread.getBreadReviews().size(); // Assuming getBreadReviews() returns List<BreadReview>
+          long likeCount = memberBreadRepository.countByBread(bread);
+          return BreadPreViewDTO.builder()
+              .title(bread.getTitle())
+              .price(bread.getPrice())
+              .reviewCount(reviewCount)
+              .likeCount(likeCount)
+              .image(bread.getImage())
+              .build();
+        })
+        .collect(Collectors.toList());
+
+    return top3BreadPreViewDTOList;
+  }
+
 
 
 }

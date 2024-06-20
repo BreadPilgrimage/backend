@@ -25,4 +25,11 @@ public class BreadRestController {
     return ApiResponse.onSuccess(result);
   }
 
+  @Operation(summary = "빵집 내 TOP3 빵 조회 API", description = "빵집 내 TOP3 빵 조회 API입니다. 빵집 아이디(bakeryId) PathVariable 입니다! ")
+  @GetMapping("/{bakeryId}/top3")
+  public ApiResponse<List<BreadPreViewDTO>> getTop3Bread(@PathVariable("bakeryId") Long bakeryId){
+    List<BreadPreViewDTO> result = breadQueryService.getTop3Bread(bakeryId);
+    return ApiResponse.onSuccess(result);
+  }
+
 }

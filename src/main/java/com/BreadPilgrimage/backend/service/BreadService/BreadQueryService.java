@@ -6,4 +6,6 @@ import java.util.List;
 public interface BreadQueryService {
 
   List<BreadPreViewDTO> getAllBreadList(Long bakeryId);
+
+  List<BreadPreViewDTO> getTop3Bread(Long bakeryId);
 }

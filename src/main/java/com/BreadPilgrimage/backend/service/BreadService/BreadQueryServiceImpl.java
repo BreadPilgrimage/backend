@@ -1,0 +1,54 @@
+package com.BreadPilgrimage.backend.service.BreadService;
+
+import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
+import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
+import com.BreadPilgrimage.backend.domain.Bakery;
+import com.BreadPilgrimage.backend.domain.Bread;
+import com.BreadPilgrimage.backend.repository.BakeryRepository;
+import com.BreadPilgrimage.backend.repository.BreadRepository;
+import com.BreadPilgrimage.backend.repository.BreadReviewRepository;
+import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class BreadQueryServiceImpl implements BreadQueryService{
+
+  private final BreadRepository breadRepository;
+  private final BakeryRepository bakeryRepository;
+  private final BreadReviewRepository breadReviewRepository;
+  private final MemberBreadRepository memberBreadRepository;
+
+  @Override
+  public List<BreadPreViewDTO> getAllBreadList(Long bakeryId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+
+    List<Bread> breadList = breadRepository.findByBakery(bakery);
+
+    List<BreadPreViewDTO> breadPreViewDTOList = breadList.stream()
+        .map(bread -> {
+          long reviewCount = breadReviewRepository.countByBread(bread);
+          long likeCount = memberBreadRepository.countByBread(bread);
+
+          return BreadPreViewDTO.builder()
+              .title(bread.getTitle())
+              .price(bread.getPrice())
+              .reviewCount(reviewCount)
+              .likeCount(likeCount)
+              .image(bread.getImage())
+              .build();
+        })
+        .collect(Collectors.toList());
+
+    return breadPreViewDTOList;
+  }
+
+
+}

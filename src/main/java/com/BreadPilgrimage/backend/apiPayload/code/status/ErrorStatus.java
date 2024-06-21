@@ -26,7 +26,11 @@ public enum ErrorStatus implements BaseErrorCode {
   // 빵집 관련 에러
   BAKERY_NOT_FOUND(HttpStatus.BAD_REQUEST, "BAKERY4001", "존재하지 않는 빵집입니다."),
   BAKERY_ALREADY_BOOKMARK(HttpStatus.BAD_REQUEST, "BAKERY4002", "이미 사용자가 저장한 빵집입니다."),
-  BAKERY_NOT_BOOKMARK(HttpStatus.BAD_REQUEST, "BAKERY4003", "저장되지 않은 빵집입니다.");
+  BAKERY_NOT_BOOKMARK(HttpStatus.BAD_REQUEST, "BAKERY4003", "저장되지 않은 빵집입니다."),
+
+  // 빵 관련 에러
+  BREAD_NOT_FOUND(HttpStatus.BAD_REQUEST, "BREAD4001", "존재하지 않는 빵입니다."),
+  ALREADY_LIKED_BREAD(HttpStatus.BAD_REQUEST, "BREAD4002", "이미 빵에 좋아요를 눌렀습니다.");
 
   private final HttpStatus httpStatus;
   private final String code;

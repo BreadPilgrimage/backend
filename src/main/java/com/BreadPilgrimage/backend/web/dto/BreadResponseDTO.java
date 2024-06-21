@@ -13,6 +13,7 @@ public class BreadResponseDTO {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class BreadPreViewDTO {
+    long id;
     String title;
     BigDecimal price;
     long reviewCount;

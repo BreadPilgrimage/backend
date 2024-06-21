@@ -39,6 +39,7 @@ public class BreadQueryServiceImpl implements BreadQueryService{
           long likeCount = memberBreadRepository.countByBread(bread);
 
           return BreadPreViewDTO.builder()
+              .id(bread.getId())
               .title(bread.getTitle())
               .price(bread.getPrice())
               .reviewCount(reviewCount)
@@ -69,6 +70,7 @@ public class BreadQueryServiceImpl implements BreadQueryService{
           long reviewCount = bread.getBreadReviews().size(); // Assuming getBreadReviews() returns List<BreadReview>
           long likeCount = memberBreadRepository.countByBread(bread);
           return BreadPreViewDTO.builder()
+              .id(bread.getId())
               .title(bread.getTitle())
               .price(bread.getPrice())
               .reviewCount(reviewCount)

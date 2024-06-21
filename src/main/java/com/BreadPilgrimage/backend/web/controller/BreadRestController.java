@@ -1,13 +1,17 @@
 package com.BreadPilgrimage.backend.web.controller;
 
 import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
+import com.BreadPilgrimage.backend.apiPayload.code.status.SuccessStatus;
+import com.BreadPilgrimage.backend.service.BreadService.BreadCommandService;
 import com.BreadPilgrimage.backend.service.BreadService.BreadQueryService;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BreadRestController {
 
   private final BreadQueryService breadQueryService;
+  private final BreadCommandService breadCommandService;
 
   @Operation(summary = "빵 전체 리스트 조회 API", description = "빵 전체 리스트 조회 API입니다. 빵집 아이디(bakeryId) PathVariable 입니다! ")
   @GetMapping("/{bakeryId}")
@@ -30,6 +35,13 @@ public class BreadRestController {
   public ApiResponse<List<BreadPreViewDTO>> getTop3Bread(@PathVariable("bakeryId") Long bakeryId){
     List<BreadPreViewDTO> result = breadQueryService.getTop3Bread(bakeryId);
     return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "빵 추천(좋아요)하기 API", description = "빵 추천(좋아요) API입니다. 빵 아이디(breadId) PathVariable 입니다!")
+  @PostMapping("/{breadId}/like")
+  public ApiResponse bookmarkBakery(@PathVariable(name = "breadId") Long bakeryId, @AuthenticationPrincipal String memberId) {
+    breadCommandService.addBreadLike(Long.parseLong(memberId), bakeryId);
+    return ApiResponse.onSuccess(SuccessStatus._OK);
   }
 
 }

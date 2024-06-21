@@ -4,6 +4,8 @@ import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
 import com.BreadPilgrimage.backend.apiPayload.code.status.SuccessStatus;
 import com.BreadPilgrimage.backend.service.BreadService.BreadCommandService;
 import com.BreadPilgrimage.backend.service.BreadService.BreadQueryService;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -35,6 +37,13 @@ public class BreadRestController {
   @GetMapping("/{bakeryId}/top3")
   public ApiResponse<List<BreadPreViewDTO>> getTop3Bread(@PathVariable("bakeryId") Long bakeryId){
     List<BreadPreViewDTO> result = breadQueryService.getTop3Bread(bakeryId);
+    return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "빵 상세페이지 조회 API", description = "빵 상세페이지 조회 API입니다. 빵 아이디(breadId) PathVariable 입니다! ")
+  @GetMapping("/{breadId}/detail")
+  public ApiResponse<BreadDetailDTO> getBreadDetail(@PathVariable("breadId") Long breadId) {
+    BreadResponseDTO.BreadDetailDTO result = breadQueryService.getBreadDetail(breadId);
     return ApiResponse.onSuccess(result);
   }
 

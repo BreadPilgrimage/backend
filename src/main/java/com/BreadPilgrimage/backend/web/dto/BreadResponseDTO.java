@@ -20,4 +20,18 @@ public class BreadResponseDTO {
     long likeCount;
     private String image;
   }
+
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class BreadDetailDTO {
+    long id;
+    String title;
+    String description;
+    BigDecimal price;
+    long reviewCount;
+    long likeCount;
+    private String image;
+  }
 }

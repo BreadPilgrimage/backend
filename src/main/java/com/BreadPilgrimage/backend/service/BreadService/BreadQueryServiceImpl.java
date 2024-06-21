@@ -8,6 +8,8 @@ import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.BreadReviewRepository;
 import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
+import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
 import java.util.Comparator;
 import java.util.List;
@@ -83,6 +85,24 @@ public class BreadQueryServiceImpl implements BreadQueryService{
     return top3BreadPreViewDTOList;
   }
 
+  @Override
+  public BreadDetailDTO getBreadDetail(Long breadId) {
+    Bread bread = breadRepository.findById(breadId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BREAD_NOT_FOUND));
+    long reviewCount = breadReviewRepository.countByBread(bread);
+    long likeCount = memberBreadRepository.countByBread(bread);
+    BreadDetailDTO breadDetailDTO = BreadDetailDTO.builder()
+        .id(bread.getId())
+        .title(bread.getTitle())
+        .description(bread.getDescription())
+        .price(bread.getPrice())
+        .reviewCount(reviewCount)
+        .likeCount(likeCount)
+        .image(bread.getImage())
+        .build();
+
+    return breadDetailDTO;
+  }
 
 
 }

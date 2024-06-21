@@ -90,8 +90,7 @@ public class S3Uploader {
 
     try (InputStream inputStream = multipartFile.getInputStream()) {
       String key = dirName + "/" + UUID.randomUUID() + "." + multipartFile.getOriginalFilename();
-      amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata).withCannedAcl(
-          CannedAccessControlList.PublicRead));
+      amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata));
       uploadFileUrl = amazonS3Client.getUrl(bucket, key).toString();
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
@@ -99,4 +98,5 @@ public class S3Uploader {
 
     return uploadFileUrl;
   }
+
 }

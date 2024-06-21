@@ -7,9 +7,11 @@ import com.BreadPilgrimage.backend.domain.Bread;
 import com.BreadPilgrimage.backend.domain.Member;
 import com.BreadPilgrimage.backend.domain.mapping.MemberBakery;
 import com.BreadPilgrimage.backend.domain.mapping.MemberBread;
+import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
 import com.BreadPilgrimage.backend.repository.MemberRepository;
+import com.BreadPilgrimage.backend.web.dto.BreadRequestDTO.BreadCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BreadCommandServiceImpl implements BreadCommandService {
 
   private final BreadRepository breadRepository;
+  private final BakeryRepository bakeryRepository;
   private final MemberRepository memberRepository;
   private final MemberBreadRepository memberBreadRepository;
 
@@ -50,5 +53,21 @@ public class BreadCommandServiceImpl implements BreadCommandService {
         .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_BOOKMARK));
 
     memberBreadRepository.delete(memberBread);
+  }
+
+  @Override
+  public Long breadCreate(Long bakeryId, long memberId, BreadCreateDTO breadCreateDTO, String imageUrl) {
+    memberRepository.findById(memberId).orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+    Bakery bakery = bakeryRepository.findById(bakeryId).orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+
+    Bread bread = breadRepository.save(Bread.builder()
+        .title(breadCreateDTO.getTitle())
+        .description(breadCreateDTO.getDescription())
+        .price(breadCreateDTO.getPrice())
+        .bakery(bakery)
+        .image(imageUrl)
+        .build());
+
+    return bread.getId();
   }
 }

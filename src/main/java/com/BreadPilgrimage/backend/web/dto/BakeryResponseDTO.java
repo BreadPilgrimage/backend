@@ -12,6 +12,7 @@ public class BakeryResponseDTO {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class BakeryDetailDTO {
+    private long id;
     private String idstyNm;
     private String bsshNm;
     private String lnmAdrs;

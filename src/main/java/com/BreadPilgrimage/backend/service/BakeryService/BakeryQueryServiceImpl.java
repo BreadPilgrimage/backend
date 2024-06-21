@@ -27,6 +27,7 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
         .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
     long bookmarkCount = memberBakeryRepository.countByBakeryId(bakeryId);
     BakeryDetailDTO bakeryDetailDTO = BakeryDetailDTO.builder()
+        .id(bakery.getId())
         .idstyNm(bakery.getIdstyNm())
         .admdNm(bakery.getAdmdNm())
         .bsshNm(bakery.getBsshNm())

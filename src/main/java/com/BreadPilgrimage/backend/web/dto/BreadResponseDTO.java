@@ -34,4 +34,17 @@ public class BreadResponseDTO {
     long likeCount;
     private String image;
   }
+
+
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class BreadTop3DTO {
+    long id;
+    String title;
+    long likeCount;
+    String bakeryName;
+    private String image;
+  }
 }

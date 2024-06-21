@@ -9,6 +9,7 @@ import com.BreadPilgrimage.backend.web.dto.BreadRequestDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadTop3DTO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,13 @@ public class BreadRestController {
   @GetMapping("/{bakeryId}")
   public ApiResponse<List<BreadPreViewDTO>> getAllBreadList(@PathVariable("bakeryId") Long bakeryId){
     List<BreadPreViewDTO> result = breadQueryService.getAllBreadList(bakeryId);
+    return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "전체 TOP3 빵 조회 API", description = "전체 TOP3 빵 조회 API입니다.")
+  @GetMapping("/top3")
+  public ApiResponse<List<BreadTop3DTO>> getTotalTop3Bread(){
+    List<BreadTop3DTO> result = breadQueryService.getTotalTop3Bread();
     return ApiResponse.onSuccess(result);
   }
 

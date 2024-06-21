@@ -11,6 +11,7 @@ import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
+import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadTop3DTO;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,6 +103,28 @@ public class BreadQueryServiceImpl implements BreadQueryService{
         .build();
 
     return breadDetailDTO;
+  }
+
+  @Override
+  public List<BreadTop3DTO> getTotalTop3Bread() {
+    List<Bread> breadList = breadRepository.findAll();
+
+    List<BreadTop3DTO> top3Breads = breadList.stream()
+        .map(bread -> {
+          long likeCount = memberBreadRepository.countByBread(bread);
+          return new BreadTop3DTO(
+              bread.getId(),
+              bread.getTitle(),
+              likeCount,
+              bread.getBakery().getBsshNm(),
+              bread.getImage()
+          );
+        })
+        .sorted(Comparator.comparingLong(BreadTop3DTO::getLikeCount).reversed())
+        .limit(3)
+        .collect(Collectors.toList());
+
+    return top3Breads;
   }
 
 

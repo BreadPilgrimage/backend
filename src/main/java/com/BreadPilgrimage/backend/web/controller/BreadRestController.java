@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,8 +40,15 @@ public class BreadRestController {
 
   @Operation(summary = "빵 추천(좋아요)하기 API", description = "빵 추천(좋아요) API입니다. 빵 아이디(breadId) PathVariable 입니다!")
   @PostMapping("/{breadId}/like")
-  public ApiResponse bookmarkBakery(@PathVariable(name = "breadId") Long bakeryId, @AuthenticationPrincipal String memberId) {
-    breadCommandService.addBreadLike(Long.parseLong(memberId), bakeryId);
+  public ApiResponse addBreadLike(@PathVariable(name = "breadId") Long breadId, @AuthenticationPrincipal String memberId) {
+    breadCommandService.addBreadLike(Long.parseLong(memberId), breadId);
+    return ApiResponse.onSuccess(SuccessStatus._OK);
+  }
+
+  @Operation(summary = "빵 추천(좋아요) 취소하기 API", description = "빵 추천(좋아요)을 취소하는 API입니다. 빵 아이디(breadId) PathVariable 입니다!")
+  @DeleteMapping("/{breadId}/deletelike")
+  public ApiResponse deleteBreadLike(@PathVariable(name = "breadId") Long breadId, @AuthenticationPrincipal String memberId) {
+    breadCommandService.deleteBreadLike(Long.parseLong(memberId), breadId);
     return ApiResponse.onSuccess(SuccessStatus._OK);
   }
 

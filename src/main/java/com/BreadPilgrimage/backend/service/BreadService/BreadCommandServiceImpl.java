@@ -2,8 +2,10 @@ package com.BreadPilgrimage.backend.service.BreadService;
 
 import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
 import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
+import com.BreadPilgrimage.backend.domain.Bakery;
 import com.BreadPilgrimage.backend.domain.Bread;
 import com.BreadPilgrimage.backend.domain.Member;
+import com.BreadPilgrimage.backend.domain.mapping.MemberBakery;
 import com.BreadPilgrimage.backend.domain.mapping.MemberBread;
 import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
@@ -36,5 +38,17 @@ public class BreadCommandServiceImpl implements BreadCommandService {
         .bread(bread)
         .build();
     memberBreadRepository.save(memberBread);
+  }
+
+  @Override
+  public void deleteBreadLike(long memberId, Long breadId) {
+    Bread bread = breadRepository.findById(breadId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BREAD_NOT_FOUND));
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+    MemberBread memberBread = memberBreadRepository.findByMemberAndBread(member, bread)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_BOOKMARK));
+
+    memberBreadRepository.delete(memberBread);
   }
 }

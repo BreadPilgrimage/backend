@@ -34,4 +34,16 @@ public class BakeryResponseDTO {
     private String bsshNm; //가게명
   }
 
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class BakeryTop3DTO {
+    private long id;
+    private String bsshNm;
+    private String rnAdrs;
+    private long bookmarks;
+    private String image;
+  }
+
 }

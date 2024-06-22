@@ -7,6 +7,7 @@ import com.BreadPilgrimage.backend.service.BakeryService.BakeryQueryService;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
+import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryTop3DTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,6 +53,13 @@ public class BakeryRestController {
   public ApiResponse unbookmarkBakery(@PathVariable(name = "bakeryId") Long bakeryId, @AuthenticationPrincipal String memberId) {
     bakeryCommandService.unbookmarkBakery(Long.parseLong(memberId), bakeryId);
     return ApiResponse.onSuccess(SuccessStatus._OK);
+  }
+
+  @Operation(summary = "전체 TOP3 빵집 조회 API", description = "전체 TOP3 빵집 조회 API입니다.")
+  @GetMapping("/top3")
+  public ApiResponse<List<BakeryTop3DTO>> getTotalTop3Bread(){
+    List<BakeryTop3DTO> result = bakeryQueryService.getTotalTop3Bakery();
+    return ApiResponse.onSuccess(result);
   }
 
 }

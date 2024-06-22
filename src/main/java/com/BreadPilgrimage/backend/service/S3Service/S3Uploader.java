@@ -34,7 +34,6 @@ public class S3Uploader {
     List<String> s3files = new ArrayList<>();
 
     for (MultipartFile multipartFile : multipartFiles) {
-
       if (multipartFile.isEmpty()) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "빈 파일은 업로드할 수 없습니다.");
       }
@@ -47,7 +46,7 @@ public class S3Uploader {
 
       try (InputStream inputStream = multipartFile.getInputStream()) {
         String key = dirName + "/" + UUID.randomUUID() + "." + multipartFile.getOriginalFilename();
-        amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
+        amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata));
         uploadFileUrl = amazonS3Client.getUrl(bucket, key).toString();
       } catch (IOException e) {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
@@ -57,6 +56,7 @@ public class S3Uploader {
     }
     return s3files;
   }
+
 
   public void deleteFile(String imageUrl) {
     String key = getKeyFromImageUrl(imageUrl);

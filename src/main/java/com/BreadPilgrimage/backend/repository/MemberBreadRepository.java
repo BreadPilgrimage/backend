@@ -10,4 +10,6 @@ public interface MemberBreadRepository extends JpaRepository<MemberBread, Long> 
   long countByBread(Bread bread);
 
   Optional<MemberBread> findByMemberAndBread(Member member, Bread bread);
+
+  Boolean existsByMemberAndBread(Member member, Bread bread);
 }

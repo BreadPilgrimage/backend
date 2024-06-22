@@ -84,4 +84,10 @@ public class BreadRestController {
     return ApiResponse.onSuccess(breadId);
   }
 
+  @Operation(summary = "빵 좋아요 상태 확인 API", description = "사용자가 빵에 좋아요를 눌렀는지 확인하는 API입니다. 빵 아이디(breadId) PathVariable 입니다!")
+  @GetMapping("/{breadId}/likestatus")
+  public ApiResponse<Boolean> checkLikeStatus(@PathVariable("breadId") Long breadId, @AuthenticationPrincipal String memberId) {
+    return ApiResponse.onSuccess(breadQueryService.checkLikeStatus(breadId, Long.valueOf(memberId)));
+  }
+
 }

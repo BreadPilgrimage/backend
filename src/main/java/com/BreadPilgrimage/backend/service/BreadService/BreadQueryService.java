@@ -14,4 +14,6 @@ public interface BreadQueryService {
   BreadDetailDTO getBreadDetail(Long breadId);
 
   List<BreadTop3DTO> getTotalTop3Bread();
+
+  Boolean checkLikeStatus(Long breadId, Long memberId);
 }

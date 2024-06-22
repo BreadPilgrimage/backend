@@ -4,16 +4,19 @@ import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
 import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
 import com.BreadPilgrimage.backend.domain.Bakery;
 import com.BreadPilgrimage.backend.domain.Bread;
+import com.BreadPilgrimage.backend.domain.Member;
 import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.BreadReviewRepository;
 import com.BreadPilgrimage.backend.repository.MemberBreadRepository;
+import com.BreadPilgrimage.backend.repository.MemberRepository;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadPreViewDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadResponseDTO.BreadTop3DTO;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class BreadQueryServiceImpl implements BreadQueryService{
   private final BakeryRepository bakeryRepository;
   private final BreadReviewRepository breadReviewRepository;
   private final MemberBreadRepository memberBreadRepository;
+  private final MemberRepository memberRepository;
 
   @Override
   public List<BreadPreViewDTO> getAllBreadList(Long bakeryId) {
@@ -125,6 +129,16 @@ public class BreadQueryServiceImpl implements BreadQueryService{
         .collect(Collectors.toList());
 
     return top3Breads;
+  }
+
+  @Override
+  public Boolean checkLikeStatus(Long breadId, Long memberId) {
+    Bread bread = breadRepository.findById(breadId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BREAD_NOT_FOUND));
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+    return memberBreadRepository.existsByMemberAndBread(member, bread);
   }
 
 

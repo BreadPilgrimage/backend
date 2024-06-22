@@ -4,9 +4,11 @@ import com.BreadPilgrimage.backend.apiPayload.code.status.ErrorStatus;
 import com.BreadPilgrimage.backend.apiPayload.exception.handler.TempHandler;
 import com.BreadPilgrimage.backend.domain.Bakery;
 import com.BreadPilgrimage.backend.domain.Bread;
+import com.BreadPilgrimage.backend.domain.Member;
 import com.BreadPilgrimage.backend.repository.BakeryRepository;
 import com.BreadPilgrimage.backend.repository.BreadRepository;
 import com.BreadPilgrimage.backend.repository.MemberBakeryRepository;
+import com.BreadPilgrimage.backend.repository.MemberRepository;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryTop3DTO;
@@ -25,6 +27,7 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
   private final BakeryRepository bakeryRepository;
   private final MemberBakeryRepository memberBakeryRepository;
   private final BreadRepository breadRepository;
+  private final MemberRepository memberRepository;
 
   @Override
   public BakeryDetailDTO getBakeryDetail(Long bakeryId) {
@@ -93,6 +96,15 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
     return top3Bakeries;
   }
 
+  @Override
+  public Boolean checkBookmarkStatus(Long bakeryId, Long memberId) {
+    Bakery bakery = bakeryRepository.findById(bakeryId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.BAKERY_NOT_FOUND));
+    Member member = memberRepository.findById(memberId)
+        .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+    return memberBakeryRepository.existsByMemberAndBakery(member, bakery);
+  }
 
 
 }

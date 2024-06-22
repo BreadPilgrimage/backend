@@ -62,4 +62,10 @@ public class BakeryRestController {
     return ApiResponse.onSuccess(result);
   }
 
+  @Operation(summary = "빵집 저장 상태 확인 API", description = "사용자가 빵집을 저장했는지 상태를 확인하는 API입니다. 빵집 아이디 PathVariable 입니다!")
+  @GetMapping("/{bakeryId}/bookmarkstatus")
+  public ApiResponse<Boolean> checkBookmarkStatus(@PathVariable("bakeryId") Long bakeryId, @AuthenticationPrincipal String memberId) {
+    return ApiResponse.onSuccess(bakeryQueryService.checkBookmarkStatus(bakeryId, Long.valueOf(memberId)));
+  }
+
 }

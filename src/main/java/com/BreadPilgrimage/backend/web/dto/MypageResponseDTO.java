@@ -28,6 +28,7 @@ public class MypageResponseDTO {
   @AllArgsConstructor
   public static class MyBreadReviewDTO {
     long reviewId;
+    long breadId;
     String content;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

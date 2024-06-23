@@ -1,13 +1,6 @@
 package com.BreadPilgrimage.backend.web.dto;
 
-import com.BreadPilgrimage.backend.domain.enums.MemberStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,4 +21,15 @@ public class MypageResponseDTO {
     String imageUrl;
     long reviewCount;
   }
+
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class MyBreadReviewDTO {
+    long reviewId;
+    String content;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
+    String imageUrl;}
 }

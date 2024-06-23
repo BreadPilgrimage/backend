@@ -8,6 +8,7 @@ import com.BreadPilgrimage.backend.web.dto.BreadReviewRequestDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadReviewResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.BreadReviewResponseDTO.BreadReviewDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,15 +30,26 @@ public class BreadReviewRestController {
   private final BreadReviewQueryService breadReviewQueryService;
   private final S3Uploader s3Uploader;
 
-  @PostMapping(value ="/{breadId}", consumes = "multipart/form-data")
+  @PostMapping(value = "/{breadId}", consumes = "multipart/form-data")
   @Operation(summary = "빵 리뷰 작성 API", description = "빵 리뷰 작성 API입니다. 빵 아이디(breadId) PathVariable 입니다!")
-  public ApiResponse<Long> breadReviewCreate(@PathVariable("breadId") Long breadId, @AuthenticationPrincipal String memberId, @ModelAttribute BreadReviewRequestDTO.BreadReviewCreateDTO breadReviewCreateDTO, @RequestPart(value = "images", required = false) List<MultipartFile> images) {
-    String dirName = "bread_review";
-    List<String> imageUrls = s3Uploader.uploadFiles(dirName, images); // 이미지 업로드
+  public ApiResponse<Long> breadReviewCreate(
+      @PathVariable("breadId") Long breadId,
+      @AuthenticationPrincipal String memberId,
+      @ModelAttribute BreadReviewRequestDTO.BreadReviewCreateDTO breadReviewCreateDTO,
+      @RequestPart(value = "images", required = false) List<MultipartFile> images) {
 
-    Long reviewId = breadReviewCommandService.breadReviewCreate(breadId, Long.parseLong(memberId),breadReviewCreateDTO,imageUrls);
+    String dirName = "bread_review";
+    List<String> imageUrls = new ArrayList<>();
+
+    // 이미지가 있는 경우에만 업로드 수행
+    if (images != null && !images.isEmpty()) {
+      imageUrls = s3Uploader.uploadFiles(dirName, images); // 이미지 업로드
+    }
+
+    Long reviewId = breadReviewCommandService.breadReviewCreate(breadId, Long.parseLong(memberId), breadReviewCreateDTO, imageUrls);
     return ApiResponse.onSuccess(reviewId);
   }
+
 
   @GetMapping("/{breadId}")
   @Operation(summary = "빵 리뷰 조회 API", description = "빵 리뷰 조회 API입니다. 빵 아이디(breadId) PathVariable 입니다!")

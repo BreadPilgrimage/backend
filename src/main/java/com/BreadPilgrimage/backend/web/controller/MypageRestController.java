@@ -4,6 +4,7 @@ import com.BreadPilgrimage.backend.apiPayload.ApiResponse;
 import com.BreadPilgrimage.backend.service.MyPageService.MypageQueryService;
 import com.BreadPilgrimage.backend.web.dto.BreadReviewResponseDTO;
 import com.BreadPilgrimage.backend.web.dto.MypageResponseDTO;
+import com.BreadPilgrimage.backend.web.dto.MypageResponseDTO.MyBakeryDTO;
 import com.BreadPilgrimage.backend.web.dto.MypageResponseDTO.MyBreadReviewDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -31,6 +32,13 @@ public class MypageRestController {
   @GetMapping("/myreview")
   public ApiResponse<List<MyBreadReviewDTO>> getMyBreadReviews(@AuthenticationPrincipal String memberId) {
     List<MyBreadReviewDTO> result = mypageQueryService.getMyBreadReviews(Long.parseLong(memberId));
+    return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "내가 찜한 빵집 조회 API", description = "내가 찜한 빵집 조회 API입니다. 토큰을 입력해주세요.")
+  @GetMapping("/mybakery")
+  public ApiResponse<List<MyBakeryDTO>> getMyBakeries(@AuthenticationPrincipal String memberId) {
+    List<MyBakeryDTO> result = mypageQueryService.getMyBakeries(Long.parseLong(memberId));
     return ApiResponse.onSuccess(result);
   }
 

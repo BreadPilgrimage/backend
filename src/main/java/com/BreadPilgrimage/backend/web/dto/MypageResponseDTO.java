@@ -33,4 +33,17 @@ public class MypageResponseDTO {
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
     String imageUrl;}
+
+  @Builder
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class MyBakeryDTO {
+    long id;
+    String bsshNm;
+    String rnAdrs;
+    long bookmarks;
+    String imageUrl;}
+
 }
+

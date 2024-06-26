@@ -15,4 +15,6 @@ public interface BakeryQueryService {
   List<BakeryTop3DTO> getTotalTop3Bakery();
 
   Boolean checkBookmarkStatus(Long bakeryId, Long memberId);
+
+  List<BakeryMapDTO> searchBakery(String bakeryName);
 }

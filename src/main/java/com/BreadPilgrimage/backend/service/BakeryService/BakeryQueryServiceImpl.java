@@ -12,6 +12,7 @@ import com.BreadPilgrimage.backend.repository.MemberRepository;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryDetailDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryMapDTO;
 import com.BreadPilgrimage.backend.web.dto.BakeryResponseDTO.BakeryTop3DTO;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,6 +105,19 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
         .orElseThrow(() -> new TempHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
     return memberBakeryRepository.existsByMemberAndBakery(member, bakery);
+  }
+
+  @Override
+  public List<BakeryMapDTO> searchBakery(String bakeryName) {
+    List<Bakery> bakeries = bakeryRepository.findByBsshNmContains(bakeryName);
+    return bakeries.stream()
+        .map(bakery -> BakeryMapDTO.builder()
+            .id(bakery.getId())
+            .la(bakery.getLa())
+            .lo(bakery.getLo())
+            .bsshNm(bakery.getBsshNm())
+            .build())
+        .collect(Collectors.toList());
   }
 
 

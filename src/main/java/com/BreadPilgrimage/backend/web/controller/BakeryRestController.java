@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -38,6 +39,13 @@ public class BakeryRestController {
   @GetMapping("/map")
   public ApiResponse<List<BakeryMapDTO>> getBakeryMap() {
     List<BakeryResponseDTO.BakeryMapDTO> result = bakeryQueryService.getBakeryMap();
+    return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "빵집 검색 API", description = "빵집 검색 API입니다. 빵집 이름 RequestParam 입니다!")
+  @GetMapping("/search")
+  public ApiResponse<List<BakeryMapDTO>> searchBakery(@RequestParam("bakeryName") String bakeryName) {
+    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryQueryService.searchBakery(bakeryName);
     return ApiResponse.onSuccess(result);
   }
 

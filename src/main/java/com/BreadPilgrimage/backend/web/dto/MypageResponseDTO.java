@@ -29,6 +29,7 @@ public class MypageResponseDTO {
   public static class MyBreadReviewDTO {
     long reviewId;
     long breadId;
+    String breadName;
     String content;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

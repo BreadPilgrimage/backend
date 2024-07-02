@@ -71,6 +71,7 @@ public class MypageQueryServiceImpl implements MypageQueryService{
           return MyBreadReviewDTO.builder()
               .reviewId(review.getId())
               .breadId(review.getBread().getId())
+              .breadName(review.getBread().getTitle())
               .content(review.getContent())
               .createdAt(review.getCreatedAt())
               .updatedAt(review.getUpdatedAt())

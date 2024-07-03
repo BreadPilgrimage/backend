@@ -42,10 +42,17 @@ public class BakeryRestController {
     return ApiResponse.onSuccess(result);
   }
 
-  @Operation(summary = "빵집 검색 API", description = "빵집 검색 API입니다. 빵집 이름 RequestParam 입니다!")
+  @Operation(summary = "빵집 지도 검색 API", description = "빵집 지도에서 검색하는 API입니다. 빵집 이름 RequestParam 입니다!")
+  @GetMapping("/map/search")
+  public ApiResponse<List<BakeryMapDTO>> searchMapBakery(@RequestParam("bakeryName") String bakeryName) {
+    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryQueryService.searchMapBakery(bakeryName);
+    return ApiResponse.onSuccess(result);
+  }
+
+  @Operation(summary = "빵집 검색 API", description = "빵집 상세 정보 검색 API입니다. 빵집 이름 RequestParam 입니다!")
   @GetMapping("/search")
-  public ApiResponse<List<BakeryMapDTO>> searchBakery(@RequestParam("bakeryName") String bakeryName) {
-    List<BakeryResponseDTO.BakeryMapDTO> result = bakeryQueryService.searchBakery(bakeryName);
+  public ApiResponse<List<BakeryDetailDTO>> searchBakery(@RequestParam("bakeryName") String bakeryName) {
+    List<BakeryDetailDTO> result = bakeryQueryService.searchBakery(bakeryName);
     return ApiResponse.onSuccess(result);
   }
 

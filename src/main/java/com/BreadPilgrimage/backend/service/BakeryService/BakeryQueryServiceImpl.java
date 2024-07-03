@@ -108,7 +108,7 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
   }
 
   @Override
-  public List<BakeryMapDTO> searchBakery(String bakeryName) {
+  public List<BakeryMapDTO> searchMapBakery(String bakeryName) {
     List<Bakery> bakeries = bakeryRepository.findByBsshNmContains(bakeryName);
     return bakeries.stream()
         .map(bakery -> BakeryMapDTO.builder()
@@ -120,5 +120,25 @@ public class BakeryQueryServiceImpl implements BakeryQueryService{
         .collect(Collectors.toList());
   }
 
+  @Override
+  public List<BakeryDetailDTO> searchBakery(String bakeryName) {
+    List<Bakery> bakeries = bakeryRepository.findByBsshNmContains(bakeryName);
+    return bakeries.stream()
+        .map(bakery -> {
+          long bookmarkCount = memberBakeryRepository.countByBakeryId(bakery.getId());
+          return BakeryDetailDTO.builder()
+              .id(bakery.getId())
+              .idstyNm(bakery.getIdstyNm())
+              .admdNm(bakery.getAdmdNm())
+              .bsshNm(bakery.getBsshNm())
+              .lgdngNm(bakery.getLgdngNm())
+              .lnmAdrs(bakery.getLnmAdrs())
+              .rnAdrs(bakery.getRnAdrs())
+              .telno(bakery.getTelno())
+              .bookmarks(bookmarkCount)
+              .build();
+        })
+        .collect(Collectors.toList());
+  }
 
 }

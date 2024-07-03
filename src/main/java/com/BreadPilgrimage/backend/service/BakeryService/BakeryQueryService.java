@@ -16,5 +16,7 @@ public interface BakeryQueryService {
 
   Boolean checkBookmarkStatus(Long bakeryId, Long memberId);
 
-  List<BakeryMapDTO> searchBakery(String bakeryName);
+  List<BakeryMapDTO> searchMapBakery(String bakeryName);
+
+  List<BakeryResponseDTO.BakeryDetailDTO> searchBakery(String bakeryName);
 }
